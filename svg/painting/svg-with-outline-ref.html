@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<title>CSS outline (ref)</title>
+
+<style>
+body { margin: 0; padding: 0; }
+</style>
+
+<svg>
+  <rect x="8" y="8" width="24" height="24" fill="blue"/>
+  <rect x="10" y="10" width="20" height="20" fill="green"/>
+
+  <rect x="7" y="47" width="26" height="26" fill="blue"/>
+  <rect x="8" y="48" width="24" height="24" fill="white"/>
+  <rect x="10" y="50" width="20" height="20" fill="green"/>
+
+  <html:link rel="stylesheet" href="/fonts/ahem.css"/>
+  <text id="text" font-family="Ahem" font-size="20px" x="10" y="100" fill="white">X</text>
+
+  <script>
+    const floatBounds = text.getBBox();
+    const bounds = {
+      x : Math.round(floatBounds.x),
+      y : Math.round(floatBounds.y),
+      width : Math.round(floatBounds.width),
+      height : Math.round(floatBounds.height)
+    };
+
+    const outline = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    outline.setAttributeNS(null, "x", bounds.x - 1);
+    outline.setAttributeNS(null, "y", bounds.y - 1);
+    outline.setAttributeNS(null, "width", bounds.width + 2);
+    outline.setAttributeNS(null, "height", bounds.height + 2);
+    outline.setAttributeNS(null, "fill", "none");
+    outline.setAttributeNS(null, "stroke", "blue");
+    outline.setAttributeNS(null, "stroke-width", "2");
+
+    text.parentNode.insertBefore(outline, text);
+  </script>
+</svg>
