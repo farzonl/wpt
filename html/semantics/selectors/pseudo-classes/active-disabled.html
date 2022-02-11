@@ -19,68 +19,39 @@
 <textarea id=disabledtextarea disabled>disabled textarea</textarea>
 
 <script>
-promise_test(async () => {
+async function testElement(clickElement, checkElement) {
+  if (!checkElement)
+    checkElement = clickElement;
+
   await (new test_driver.Actions()
-    .pointerMove(2, 2, {origin: disabledbutton})
+    .pointerMove(2, 2, {origin: clickElement})
     .pointerDown())
     .send();
 
-  assert_true(disabledbutton.matches(':active'));
+  assert_true(checkElement.matches(':active'));
 
   await (new test_driver.Actions()
     .pointerUp())
     .send();
-}, 'Clicking on a disabled button should make it get the :active selector.');
+}
 
 promise_test(async () => {
-  await (new test_driver.Actions()
-    .pointerMove(2, 2, {origin: buttonlabel})
-    .pointerDown())
-    .send();
-
-  assert_true(disabledbutton.matches(':active'));
-
-  await (new test_driver.Actions()
-    .pointerUp())
-    .send();
-}, 'Clicking the label for a disabled button should make the button get the :active selector.');
+  await testElement(disabledbutton);
+}, 'Clicking on a disabled button should make it match the :active selector.');
 
 promise_test(async () => {
-  await (new test_driver.Actions()
-    .pointerMove(2, 2, {origin: buttonchild})
-    .pointerDown())
-    .send();
-
-  assert_true(buttonparent.matches(':active'));
-
-  await (new test_driver.Actions()
-    .pointerUp())
-    .send();
-}, 'Clicking on a child of a disabled button should make the button get the :active selector.');
+  await testElement(buttonlabel, disabledbutton);
+}, 'Clicking the label for a disabled button should make the button match the :active selector.');
 
 promise_test(async () => {
-  await (new test_driver.Actions()
-    .pointerMove(2, 2, {origin: disabledinput})
-    .pointerDown())
-    .send();
-
-  assert_true(disabledinput.matches(':active'));
-
-  await (new test_driver.Actions()
-    .pointerUp())
-    .send();
-}, 'Clicking on a disabled input should make it get the :active selector.');
+  await testElement(buttonchild, buttonparent);
+}, 'Clicking on a child of a disabled button should make the button match the :active selector.');
 
 promise_test(async () => {
-  await (new test_driver.Actions()
-    .pointerMove(2, 2, {origin: disabledtextarea})
-    .pointerDown())
-    .send();
+  await testElement(disabledinput);
+}, 'Clicking on a disabled input should make it match the :active selector.');
 
-  assert_true(disabledtextarea.matches(':active'));
-
-  await (new test_driver.Actions()
-    .pointerUp())
-    .send();
-}, 'Clicking on a disabled textarea should make it get the :active selector.');
+promise_test(async () => {
+  await testElement(disabledtextarea);
+}, 'Clicking on a disabled textarea should make it match the :active selector.');
 </script>
